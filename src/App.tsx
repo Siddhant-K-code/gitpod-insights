@@ -15,6 +15,9 @@ function App() {
           startTime: string;
           contextUrl: string;
           credits: number;
+          workspaceId: string;
+          workspaceType: string;
+          workspaceClass: string;
         }[]
       | React.SetStateAction<null>
       | unknown[][] = [];
@@ -42,6 +45,9 @@ function App() {
             startTime: value[11].slice(0, 10),
             contextUrl: value[12],
             credits: parseFloat(value[3]),
+            workspaceId: value[13],
+            workspaceType: value[15],
+            workspaceClass: value[16],
           };
         });
 
