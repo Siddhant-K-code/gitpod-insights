@@ -1,6 +1,6 @@
 import { parse, ParseResult } from "papaparse";
 
-export interface DailyEntry {
+export interface UsageReportCsvEntry {
   userName: string;
   teamId: string;
   startTime: string;
@@ -11,13 +11,13 @@ export interface DailyEntry {
   workspaceClass: string;
 }
 
-export interface GitpodDailyEntry extends DailyEntry {
+export interface UsageReportEntry extends UsageReportCsvEntry {
   totalCredits: number;
 }
 
 export const getCsvFile = (
   file: File
-): Promise</*{ [key: string]: GitpodDailyEntry[] }*/ GitpodDailyEntry[]> => {
+): Promise</*{ [key: string]: UsageReportEntry[] }*/ UsageReportEntry[]> => {
   return new Promise((resolve) => {
     const csvArray: string[][] = [];
 
@@ -32,7 +32,7 @@ export const getCsvFile = (
         //first element is an array with the headlines and no relevant data
         csvArray.shift();
 
-        const csvDataStructuredAsObjects: DailyEntry[] = csvArray.map(
+        const csvDataStructuredAsObjects: UsageReportCsvEntry[] = csvArray.map(
           (value) => {
             return {
               userName: value[10],
@@ -47,15 +47,14 @@ export const getCsvFile = (
           }
         );
 
-        const githubBillingEntries: GitpodDailyEntry[] =
-          csvDataStructuredAsObjects.map((dailyEntry) => {
+        const gitpodBillingEntries: UsageReportEntry[] =
+          csvDataStructuredAsObjects.map((UsageReportCsvEntry) => {
             return {
-              ...dailyEntry,
-              totalCredits: parseFloat(dailyEntry.credits.toFixed(2)),
+              ...UsageReportCsvEntry,
+              totalCredits: parseFloat(UsageReportCsvEntry.credits.toFixed(2)),
             };
           });
-
-        resolve(githubBillingEntries);
+        resolve(gitpodBillingEntries);
       },
     });
   });
