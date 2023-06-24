@@ -2,8 +2,6 @@
   display: flex;
   justify-content: space-between;
   margin: 0 2rem;
-  max-width: 950px;
-  justify-self: center;
 }
 
 .toggle-button {

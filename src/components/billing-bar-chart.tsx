@@ -32,7 +32,9 @@ export const BillingBarChart = ({
   const userNames = [
     // @ts-ignore
     ...new Set(csvData.map((entry) => entry.userName)),
-  ]; /* This will list all users */
+  ];
+   /* This will list all users */
+
   //   const repositoryNames = [
   //     "https://github.com/gitpod-io/gitpod",
   //     "https://github.com/gitpod-io/gitpod-dedicated",
