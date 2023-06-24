@@ -16,6 +16,9 @@ interface RechartProps {
       startTime: string;
       contextUrl: string;
       credits: number;
+      workspaceId: string;
+      workspaceType: string;
+      workspaceClass: string;
     }[];
   } | null;
 }
@@ -48,8 +51,7 @@ const Rechart = ({ csvData }: RechartProps): JSX.Element => {
             ? // @ts-ignore
               (finalObj[obj.userName] = finalObj[obj.userName] + obj.credits) // @ts-ignore
             : (finalObj[obj.userName] = obj.credits);
-          if (!userNames.includes(obj.userName))
-            userNames.push(obj.userName);
+          if (!userNames.includes(obj.userName)) userNames.push(obj.userName);
         }
       );
       // @ts-ignore

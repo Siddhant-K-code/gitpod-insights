@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Rechart from "./rechart";
-import FileInput from "./fileInput";
+import FileInput from "./file-input";
 import { parse } from "papaparse";
 import { ParseResult } from "papaparse";
 
