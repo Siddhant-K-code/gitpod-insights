@@ -22,10 +22,39 @@ const BillingChart = ({ csvData }: BillingChartProps): JSX.Element => {
   const dropdownMenuOptions = ["daily", "weekly"];
   const entriesGroupedPerDay = groupEntriesPerDay(csvData);
   const entriesGroupedPerWeek = groupEntriesPerWeek(csvData);
-  /* // @ts-ignore
-    const colors = ["#233666", "#96ADEA", "#4F79E6", "#414C66", "#3D5EB3", "#233666", "#96ADEA", "#4F79E6", "#414C66", "#3D5EB3"]
-    let userNames: (string | number)[] = []
-    const dropdownMenuOptions = ['daily', 'weekly']; */
+  // @ts-ignore
+    const userNames = [...new Set(csvData.map((entry) => entry.userName))] /* This will list all users */
+//   const repositoryNames = [
+//     "https://github.com/gitpod-io/gitpod",
+//     "https://github.com/gitpod-io/gitpod-dedicated",
+//     "https://github.com/gitpod-io/website",
+//   ];
+
+  const colors = [
+    "#233666",
+    "#96ADEA",
+    "#4F79E6",
+    "#414C66",
+    "#3D5EB3",
+    "#233666",
+    "#96ADEA",
+    "#4F79E6",
+    "#414C66",
+    "#3D5EB3",
+  ];
+
+  const getcreditByUserName = (
+    userName: string,
+    currentEntries: UsageReportEntry[]
+  ) => {
+    let creditByUserName = 0;
+    currentEntries.forEach((entry) => {
+      if (entry.userName === userName) {
+        creditByUserName += entry.totalCredits;
+      }
+    });
+    return Math.round(creditByUserName * 100) / 100;
+  };
 
   return (
     <>
@@ -50,8 +79,19 @@ const BillingChart = ({ csvData }: BillingChartProps): JSX.Element => {
         <YAxis />
         <Tooltip />
         <Legend />
-        {/*TODO: Split up each bar by user name*/}
-        <Bar dataKey={"totalPrice"} />
+        {userNames.map((userName, index) => {
+          return (
+            <Bar
+              dataKey={(currentEntry) =>
+                getcreditByUserName(userName, currentEntry.entries)
+              }
+              stackId="a"
+              fill={colors[index]}
+              key={index}
+              name={userName}
+            />
+          );
+        })}
       </BarChart>
     </>
   );

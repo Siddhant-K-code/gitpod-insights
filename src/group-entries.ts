@@ -3,7 +3,7 @@ import {getISOWeek, lastDayOfWeek, lightFormat, startOfWeek} from 'date-fns'
 
 interface UsageReportDay {
     day: string; // iso date
-    totalPrice: number; // for the charts total value
+    totalCredits: number; // for the charts total value
     entries: UsageReportEntry[];
 }
 
@@ -19,13 +19,13 @@ export const groupEntriesPerDay = (csvData: UsageReportEntry[]): UsageReportDay[
         }))) {
             const newEntry: UsageReportDay = {
                 day: currentDate,
-                totalPrice: obj.totalCredits,
+                totalCredits: obj.totalCredits,
                 entries: [obj]
             }
             acc.push(newEntry)
         }else {
             acc[indexOfEntryForCurrentDate].entries.push(obj)
-            acc[indexOfEntryForCurrentDate].totalPrice = acc[indexOfEntryForCurrentDate].totalPrice + obj.totalCredits
+            acc[indexOfEntryForCurrentDate].totalCredits = acc[indexOfEntryForCurrentDate].totalCredits + obj.totalCredits
         }
         return acc;
     }, []);
@@ -38,7 +38,7 @@ interface UsageReportWeek {
     from: string; // iso date
     to: string; // iso date
     weekNumber: number;
-    totalPrice: number; // for the charts total value
+    totalCredits: number; // for the charts total value
     entries: UsageReportEntry[];
 }
 
@@ -61,14 +61,14 @@ export const groupEntriesPerWeek = (csvData: UsageReportEntry[]): UsageReportWee
                 from: firstDayOfTheWeek.toISOString(),
                 to: lastDayOfTheWeek.toISOString(),
                 weekNumber: currentWeekNumber,
-                totalPrice: obj.totalCredits,
+                totalCredits: obj.totalCredits,
                 entries: [obj]
             }
 
             acc.push(newEntry)
         }else {
             acc[indexOfEntryForCurrentDate].entries.push(obj)
-            acc[indexOfEntryForCurrentDate].totalPrice = acc[indexOfEntryForCurrentDate].totalPrice + obj.totalCredits
+            acc[indexOfEntryForCurrentDate].totalCredits = acc[indexOfEntryForCurrentDate].totalCredits + obj.totalCredits
         }
         return acc;
     }, []);
