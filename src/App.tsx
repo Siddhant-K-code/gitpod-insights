@@ -1,31 +1,45 @@
 import React, { useState } from "react";
-import FileInput from "./components/file-input";
-import ChartContainer from "./components/chart-container";
-import MonthlyWidgetContainer from "./components/monthly-widget-container";
+import { FileInput } from "./components/file-input";
+import { ChartContainer } from "./components/chart-container";
+import { MonthlyWidgetContainer } from "./components/monthly-widget-container";
 import { getCsvFile, UsageReportEntry } from "./csv-reader";
-
-export interface UsageReportCsvEntry {
-  userName: string;
-  teamId: string;
-  startTime: string;
-  contextUrl: string;
-  credits: number;
-  workspaceId: string;
-  workspaceType: string;
-}
+import { WidgetContext } from "./components/widget-context";
 
 const App = (): JSX.Element => {
   const [csvData, setCsvData] = useState<UsageReportEntry[] | null>(null);
-  const handleFileSubmit = (file: File) => {
-    getCsvFile(file).then((res) => setCsvData(res));
+
+  const handleInput = (file: File) => {
+    getCsvFile(file).then((res) => {
+      setCsvData(res);
+    });
   };
 
+  const handleWidgetClick = (month: string, data: UsageReportEntry[]) => {
+    if (month === selectedMonthFromWidget.monthName) {
+      setSelectedMonthFromWidget({ monthName: "", data: [] });
+    } else {
+      setSelectedMonthFromWidget({ monthName: month, data: data });
+    }
+  };
+  const [selectedMonthFromWidget, setSelectedMonthFromWidget] = useState<{
+    monthName: string;
+    data: UsageReportEntry[];
+  }>({ monthName: "", data: [] });
+
   return (
-    <div className="App">
-      <FileInput onSubmit={handleFileSubmit} />
-      {csvData && <MonthlyWidgetContainer csvData={csvData} />}
-      {csvData && <ChartContainer csvData={csvData} />}
-    </div>
+    <WidgetContext.Provider
+      value={{
+        activeMonth: selectedMonthFromWidget,
+        setActiveMonth: (month: string, data: UsageReportEntry[]) =>
+          handleWidgetClick(month, data),
+      }}
+    >
+      <div className="App">
+        <FileInput onInput={handleInput} />
+        {csvData && <MonthlyWidgetContainer csvData={csvData} />}
+        {csvData && <ChartContainer csvData={csvData} />}
+      </div>
+    </WidgetContext.Provider>
   );
 };
 

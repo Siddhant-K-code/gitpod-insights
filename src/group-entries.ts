@@ -94,55 +94,80 @@ export const groupEntriesPerWeek = (
   }, []);
 };
 
-export interface UsageReportMonth{
-    monthName: string; // a.e.: "April 2020"
-    month: number; // a.e. 4
-    from: string; // iso date
-    to: string; // iso date
-    totalCredits: number; // for the charts total value
-    entries: UsageReportEntry[];
+export interface UsageReportMonth {
+  monthName: string; // a.e.: "April 2020"
+  month: number; // a.e. 4
+  from: string; // iso date
+  to: string; // iso date
+  totalCredits: number; // for the charts total value
+  entries: UsageReportEntry[];
 }
 
+export const groupEntriesPerMonth = (
+  csvData: UsageReportEntry[]
+): UsageReportMonth[] => {
+  return csvData.reduce((acc: UsageReportMonth[], obj) => {
+    let indexOfEntryForCurrentDate: number = 0;
+    const currentDate = new Date(obj.startTime);
+    const currentStartOfMonth = startOfMonth(currentDate).toISOString();
 
-export const groupEntriesPerMonth = (csvData: UsageReportEntry[]): UsageReportMonth[] => {
-    // @ts-ignore
-    return csvData.reduce((acc: UsageReportMonth[], obj) => {
-        let indexOfEntryForCurrentDate: number = 0;
-        const currentDate = new Date(obj.startTime)
-        const currentStartOfMonth = startOfMonth(currentDate).toISOString()
+    //Is the current date already in acc?
+    if (
+      !acc.find((objectsInAcc: UsageReportMonth, index) => {
+        indexOfEntryForCurrentDate = index;
+        return objectsInAcc.from === currentStartOfMonth;
+      })
+    ) {
+      const firstDayOfMonth = startOfMonth(currentDate);
+      const lastDayOfTheMonth = lastDayOfMonth(currentDate);
 
-        //Is the current date already in acc?
-        if (!(acc.find((objectsInAcc: UsageReportMonth, index) => {
-            indexOfEntryForCurrentDate = index
-            return objectsInAcc.from === currentStartOfMonth
-        }))) {
-            const firstDayOfMonth = startOfMonth(currentDate)
-            const lastDayOfTheMonth = lastDayOfMonth(currentDate)
+      const newEntry: UsageReportMonth = {
+        monthName: `${format(currentDate, "LLLL")} ${getYear(currentDate)}`,
+        month: getMonth(currentDate) + 1,
+        from: firstDayOfMonth.toISOString(),
+        to: lastDayOfTheMonth.toISOString(),
+        totalCredits: obj.totalCredits,
+        entries: [obj],
+      };
+      acc.push(newEntry);
+    } else {
+      acc[indexOfEntryForCurrentDate].entries.push(obj);
+      acc[indexOfEntryForCurrentDate].totalCredits =
+        acc[indexOfEntryForCurrentDate].totalCredits + obj.totalCredits;
+    }
+    return acc;
+  }, []);
+};
 
-            const newEntry: UsageReportMonth = {
-                monthName: `${format(currentDate, 'LLLL')} ${getYear(currentDate)}`,
-                month: getMonth(currentDate) + 1,
-                from: firstDayOfMonth.toISOString(),
-                to: lastDayOfTheMonth.toISOString(),
-                totalCredits: obj.totalCredits,
-                entries: [obj]
-            }
-            acc.push(newEntry)
-        }else {
-            acc[indexOfEntryForCurrentDate].entries.push(obj)
-            acc[indexOfEntryForCurrentDate].totalCredits = acc[indexOfEntryForCurrentDate].totalCredits + obj.totalCredits
-        }
-        return acc;
-    }, []);
-}
+export const getCreditByUserName = (
+  userName: string,
+  currentEntries: UsageReportEntry[]
+) => {
+  let creditByUserName = 0;
+  currentEntries.forEach((entry) => {
+    if (entry.userName === userName) {
+      creditByUserName += entry.totalCredits;
+    }
+  });
+  return Math.round(creditByUserName * 100) / 100;
+};
 
+export const getMaximumTotalPriceOfAllDays = (data: UsageReportEntry[]) => {
+  const entriesGroupedPerDay = groupEntriesPerDay(data);
+  return Math.ceil(
+    Math.max.apply(
+      Math,
+      entriesGroupedPerDay.map((entry) => entry.totalCredits)
+    )
+  );
+};
 
-export const getCreditByUserName = (userName: string, currentEntries: UsageReportEntry[]) => {
-    let creditByUserName = 0
-    currentEntries.forEach((entry) => {
-        if(entry.userName === userName){
-            creditByUserName += entry.totalCredits
-        }
-    })
-    return Math.round(creditByUserName * 100) / 100
-}
+export const getMaximumTotalPriceOfAllWeeks = (data: UsageReportEntry[]) => {
+  const entriesGroupedPerWeek = groupEntriesPerWeek(data);
+  return Math.ceil(
+    Math.max.apply(
+      Math,
+      entriesGroupedPerWeek.map((entry) => entry.totalCredits)
+    )
+  );
+};
