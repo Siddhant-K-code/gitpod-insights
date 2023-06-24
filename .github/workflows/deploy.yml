@@ -23,7 +23,7 @@ jobs:
           PUBLIC_URL: /gitpod-insights
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.4.2
+        uses: JamesIves/github-pages-deploy-action@v4.4.2
         with:
           branch: gh-pages
           folder: build
