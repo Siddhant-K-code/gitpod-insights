@@ -4,6 +4,7 @@ import { ChartContainer } from "./components/chart-container";
 import { MonthlyWidgetContainer } from "./components/monthly-widget-container";
 import { getCsvFile, UsageReportEntry } from "./csv-reader";
 import { WidgetContext } from "./components/widget-context";
+import { Headline } from "./components/headline";
 
 const App = (): JSX.Element => {
   const [csvData, setCsvData] = useState<UsageReportEntry[] | null>(null);
@@ -35,6 +36,7 @@ const App = (): JSX.Element => {
       }}
     >
       <div className="App">
+        <Headline />
         <FileInput onInput={handleInput} />
         {csvData && <MonthlyWidgetContainer csvData={csvData} />}
         {csvData && <ChartContainer csvData={csvData} />}

@@ -19,7 +19,7 @@ export const FileInput = ({ onInput }: FileInputProp): JSX.Element => {
       <form onSubmit={handleInput}>
         <label>
           Upload file:
-          <input type="file" ref={fileInput} onInput={handleInput} />
+          <input type="file" ref={fileInput} onInput={handleInput} style={{marginLeft: "8px"}}/>
         </label>
       </form>
     </div>
