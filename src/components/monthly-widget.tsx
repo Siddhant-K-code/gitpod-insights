@@ -64,7 +64,7 @@ export const MonthlyWidget = ({
         setActiveMonth(monthlyEntry.monthName, monthlyEntry.entries)
       }
     >
-      <div>
+      <div style={{padding: 10}}>
         <h4>{monthlyEntry.monthName}</h4>
         <p>{`${Math.round(monthlyEntry.totalCredits * 100) / 100} credits`}</p>
       </div>
