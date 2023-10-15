@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/gitpod-insights/static/css/main.ff6d3bef.css",
-    "main.js": "/gitpod-insights/static/js/main.4a7eb410.js",
+    "main.css": "/gitpod-insights/static/css/main.cb76aba8.css",
+    "main.js": "/gitpod-insights/static/js/main.192b4e2d.js",
     "index.html": "/gitpod-insights/index.html",
-    "main.ff6d3bef.css.map": "/gitpod-insights/static/css/main.ff6d3bef.css.map",
-    "main.4a7eb410.js.map": "/gitpod-insights/static/js/main.4a7eb410.js.map"
+    "main.cb76aba8.css.map": "/gitpod-insights/static/css/main.cb76aba8.css.map",
+    "main.192b4e2d.js.map": "/gitpod-insights/static/js/main.192b4e2d.js.map"
   },
   "entrypoints": [
-    "static/css/main.ff6d3bef.css",
-    "static/js/main.4a7eb410.js"
+    "static/css/main.cb76aba8.css",
+    "static/js/main.192b4e2d.js"
   ]
 }
