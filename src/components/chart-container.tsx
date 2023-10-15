@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { UsageReportEntry } from "../csv-reader";
 import { BillingBarChart } from "./billing-bar-chart";
+import UserActivityPieChart from "./user-activity-pie-chart";
 import { BillingLineChart } from "./billing-line-chart";
 import "./chart-container.css";
 import { WidgetContext } from "./widget-context";
@@ -91,6 +92,8 @@ export const ChartContainer = ({
           groupedBy={groupedBy}
         />
       )}
+      <div className="divider-border"/>
+      <UserActivityPieChart csvData={currentData} />
     </>
   );
 };

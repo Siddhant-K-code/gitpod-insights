@@ -1,4 +1,3 @@
-import React from "react";
 import { UsageReportEntry } from "../csv-reader";
 import {
   BarChart,
@@ -33,7 +32,7 @@ export const BillingBarChart = ({
     // @ts-ignore
     ...new Set(csvData.map((entry) => entry.userName)),
   ];
-   /* This will list all users */
+  /* This will list all users */
 
   //   const repositoryNames = [
   //     "https://github.com/gitpod-io/gitpod",
@@ -111,7 +110,7 @@ export const BillingBarChart = ({
           labelFormatter={(label) =>
             Date.parse(label) ? lightFormat(new Date(label), "dd.MM.") : label
           }
-          contentStyle={{backgroundColor: "#f5f4f4"}}
+          contentStyle={{ backgroundColor: "#f5f4f4" }}
         />
         <Legend />
         {userNames.map((userName, index) => {
