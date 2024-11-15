@@ -5,9 +5,12 @@ import { MonthlyWidgetContainer } from "./components/monthly-widget-container";
 import { getCsvFile, UsageReportEntry } from "./csv-reader";
 import { WidgetContext } from "./components/widget-context";
 import { Headline } from "./components/headline";
+import { DashboardToggle } from "./components/mode-toggle";
+import { EnterpriseDashboard } from "./components/enterprise-dashboard-container";
 
 const App = (): JSX.Element => {
   const [csvData, setCsvData] = useState<UsageReportEntry[] | null>(null);
+  const [dashboardMode, setDashboardMode] = useState<'enterprise' | 'payg'>('payg');
 
   const handleInput = (file: File) => {
     getCsvFile(file).then((res) => {
@@ -28,18 +31,26 @@ const App = (): JSX.Element => {
   }>({ monthName: "", data: [] });
 
   return (
-    <WidgetContext.Provider
-      value={{
-        activeMonth: selectedMonthFromWidget,
-        setActiveMonth: (month: string, data: UsageReportEntry[]) =>
-          handleWidgetClick(month, data),
-      }}
-    >
+    <WidgetContext.Provider value={{
+      activeMonth: selectedMonthFromWidget,
+      setActiveMonth: (month: string, data: UsageReportEntry[]) => handleWidgetClick(month, data),
+    }}>
       <div className="App">
         <Headline />
         <FileInput onInput={handleInput} />
-        {csvData && <MonthlyWidgetContainer csvData={csvData} />}
-        {csvData && <ChartContainer csvData={csvData} />}
+        <DashboardToggle
+          mode={dashboardMode}
+          onToggle={(mode) => setDashboardMode(mode)}
+        />
+        {csvData && dashboardMode === 'payg' && (
+          <>
+            <MonthlyWidgetContainer csvData={csvData} />
+            <ChartContainer csvData={csvData} />
+          </>
+        )}
+        {csvData && dashboardMode === 'enterprise' && (
+          <EnterpriseDashboard csvData={csvData} />
+        )}
       </div>
     </WidgetContext.Provider>
   );

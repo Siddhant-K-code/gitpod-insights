@@ -1,0 +1,27 @@
+.table-container {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.user-distribution-chart table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+}
+
+.user-distribution-chart th {
+  background-color: #f5f5f5;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #ddd;
+}
+
+.user-distribution-chart td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.user-distribution-chart tr:hover {
+  background-color: #f9f9f9;
+}
