@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef } from 'react';
 
 interface FileInputProp {
   onInput: (file: File) => void;
@@ -19,7 +19,13 @@ export const FileInput = ({ onInput }: FileInputProp): JSX.Element => {
       <form onSubmit={handleInput}>
         <label>
           Upload file:
-          <input type="file" ref={fileInput} onInput={handleInput} style={{marginLeft: "8px"}}/>
+          <input
+            type="file"
+            accept=".csv"
+            ref={fileInput}
+            onInput={handleInput}
+            style={{ marginLeft: '8px' }}
+          />
         </label>
       </form>
     </div>
